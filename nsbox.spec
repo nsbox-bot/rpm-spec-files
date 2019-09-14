@@ -56,9 +56,6 @@ BuildRequires: golang(github.com/google/go-cmp/cmp/internal/teststructs)
 %if 0%{?fedora} >= 31
 BuildRequires: golang(github.com/kr/pty)
 %endif
-%if 0%{?fedora} >= 31
-BuildRequires: golang(github.com/mholt/archiver)
-%endif
 BuildRequires: golang(github.com/pkg/errors)
 BuildRequires: golang(golang.org/x/crypto/ssh/terminal)
 BuildRequires: golang(golang.org/x/sync/errgroup)
@@ -70,46 +67,22 @@ BuildRequires: golang(k8s.io/apimachinery/pkg/util/wait)
 %endif
 %define setup_go_repo_links \
 cd %{_builddir}/%{name}-%{version}\
-mkdir -p vendor/github.com/andybalholm\
-ln -sf %{gopath}/src/github.com/andybalholm/brotli vendor/github.com/andybalholm/brotli\
 mkdir -p vendor/github.com/coreos\
 ln -sf %{gopath}/src/github.com/coreos/go-systemd vendor/github.com/coreos/go-systemd\
 mkdir -p vendor/github.com/coreos\
 ln -sf %{gopath}/src/github.com/coreos/pkg vendor/github.com/coreos/pkg\
-mkdir -p vendor/github.com/dsnet\
-ln -sf %{gopath}/src/github.com/dsnet/compress vendor/github.com/dsnet/compress\
 mkdir -p vendor/github.com/dustin\
 ln -sf %{gopath}/src/github.com/dustin/go-humanize vendor/github.com/dustin/go-humanize\
 mkdir -p vendor/github.com/godbus\
 ln -sf %{gopath}/src/github.com/godbus/dbus vendor/github.com/godbus/dbus\
-mkdir -p vendor/github.com/golang\
-ln -sf %{gopath}/src/github.com/golang/gddo vendor/github.com/golang/gddo\
-mkdir -p vendor/github.com/golang\
-ln -sf %{gopath}/src/github.com/golang/snappy vendor/github.com/golang/snappy\
 mkdir -p vendor/github.com/google\
 ln -sf %{gopath}/src/github.com/google/go-cmp vendor/github.com/google/go-cmp\
-mkdir -p vendor/github.com/klauspost\
-ln -sf %{gopath}/src/github.com/klauspost/compress vendor/github.com/klauspost/compress\
-mkdir -p vendor/github.com/klauspost\
-ln -sf %{gopath}/src/github.com/klauspost/cpuid vendor/github.com/klauspost/cpuid\
-mkdir -p vendor/github.com/klauspost\
-ln -sf %{gopath}/src/github.com/klauspost/pgzip vendor/github.com/klauspost/pgzip\
 mkdir -p vendor/github.com/kr\
 ln -sf %{gopath}/src/github.com/kr/pty vendor/github.com/kr/pty\
 mkdir -p vendor/github.com/mattn\
 ln -sf %{gopath}/src/github.com/mattn/go-runewidth vendor/github.com/mattn/go-runewidth\
-mkdir -p vendor/github.com/mholt\
-ln -sf %{gopath}/src/github.com/mholt/archiver vendor/github.com/mholt/archiver\
-mkdir -p vendor/github.com/nwaples\
-ln -sf %{gopath}/src/github.com/nwaples/rardecode vendor/github.com/nwaples/rardecode\
-mkdir -p vendor/github.com/pierrec\
-ln -sf %{gopath}/src/github.com/pierrec/lz4 vendor/github.com/pierrec/lz4\
 mkdir -p vendor/github.com/pkg\
 ln -sf %{gopath}/src/github.com/pkg/errors vendor/github.com/pkg/errors\
-mkdir -p vendor/github.com/ulikunitz\
-ln -sf %{gopath}/src/github.com/ulikunitz/xz vendor/github.com/ulikunitz/xz\
-mkdir -p vendor/github.com/xi2\
-ln -sf %{gopath}/src/github.com/xi2/xz vendor/github.com/xi2/xz\
 mkdir -p vendor/golang.org/x\
 ln -sf %{gopath}/src/golang.org/x/crypto vendor/golang.org/x/crypto\
 mkdir -p vendor/golang.org/x\
@@ -123,68 +96,68 @@ ln -sf %{gopath}/src/k8s.io/apimachinery vendor/k8s.io/apimachinery\
 mkdir -p vendor/k8s.io\
 ln -sf %{gopath}/src/k8s.io/klog vendor/k8s.io/klog\
 :
-Source2: https://github.com/google/go-containerregistry/archive/31e00cede111.tar.gz#/github-com-google-go-containerregistry-31e00cede111.tar.gz
-Source3: https://github.com/google/subcommands/archive/v1.0.1.tar.gz#/github-com-google-subcommands-v1.0.1.tar.gz
-Source4: https://github.com/refi64/go-lxtempdir/archive/e8f0a4e7825f.tar.gz#/github-com-refi64-go-lxtempdir-e8f0a4e7825f.tar.gz
-Source5: https://github.com/varlink/go/archive/b83e34ab175f.tar.gz#/github-com-varlink-go-b83e34ab175f.tar.gz
+Source2: https://github.com/andybalholm/brotli/archive/5f990b63d2d6.tar.gz#/github-com-andybalholm-brotli-5f990b63d2d6.tar.gz
+Source3: https://github.com/dsnet/compress/archive/v0.0.1.tar.gz#/github-com-dsnet-compress-v0.0.1.tar.gz
+Source4: https://github.com/golang/gddo/archive/af0f2af80721.tar.gz#/github-com-golang-gddo-af0f2af80721.tar.gz
+Source5: https://github.com/golang/snappy/archive/v0.0.1.tar.gz#/github-com-golang-snappy-v0.0.1.tar.gz
+Source6: https://github.com/google/go-containerregistry/archive/31e00cede111.tar.gz#/github-com-google-go-containerregistry-31e00cede111.tar.gz
+Source7: https://github.com/google/subcommands/archive/v1.0.1.tar.gz#/github-com-google-subcommands-v1.0.1.tar.gz
+Source8: https://github.com/klauspost/compress/archive/v1.7.1.tar.gz#/github-com-klauspost-compress-v1.7.1.tar.gz
+Source9: https://github.com/klauspost/cpuid/archive/v1.2.0.tar.gz#/github-com-klauspost-cpuid-v1.2.0.tar.gz
+Source10: https://github.com/klauspost/pgzip/archive/v1.2.1.tar.gz#/github-com-klauspost-pgzip-v1.2.1.tar.gz
+Source11: https://github.com/mholt/archiver/archive/v3.2.0.tar.gz#/github-com-mholt-archiver-v3.2.0.tar.gz
+Source12: https://github.com/nwaples/rardecode/archive/v1.0.0.tar.gz#/github-com-nwaples-rardecode-v1.0.0.tar.gz
+Source13: https://github.com/pierrec/lz4/archive/v2.2.6.tar.gz#/github-com-pierrec-lz4-v2.2.6.tar.gz
+Source14: https://github.com/refi64/go-lxtempdir/archive/e8f0a4e7825f.tar.gz#/github-com-refi64-go-lxtempdir-e8f0a4e7825f.tar.gz
+Source15: https://github.com/ulikunitz/xz/archive/v0.5.6.tar.gz#/github-com-ulikunitz-xz-v0.5.6.tar.gz
+Source16: https://github.com/varlink/go/archive/b83e34ab175f.tar.gz#/github-com-varlink-go-b83e34ab175f.tar.gz
+Source17: https://github.com/xi2/xz/archive/48954b6210f8.tar.gz#/github-com-xi2-xz-48954b6210f8.tar.gz
 %define setup_go_archives_universal \
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/google/go-containerregistry\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/andybalholm/brotli\
 tar --strip-components=1 -xf %{S:2}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/google/subcommands\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/dsnet/compress\
 tar --strip-components=1 -xf %{S:3}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/refi64/go-lxtempdir\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/golang/gddo\
 tar --strip-components=1 -xf %{S:4}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/varlink/go\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/golang/snappy\
 tar --strip-components=1 -xf %{S:5}\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/google/go-containerregistry\
+tar --strip-components=1 -xf %{S:6}\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/google/subcommands\
+tar --strip-components=1 -xf %{S:7}\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/klauspost/compress\
+tar --strip-components=1 -xf %{S:8}\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/klauspost/cpuid\
+tar --strip-components=1 -xf %{S:9}\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/klauspost/pgzip\
+tar --strip-components=1 -xf %{S:10}\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/mholt/archiver\
+tar --strip-components=1 -xf %{S:11}\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/nwaples/rardecode\
+tar --strip-components=1 -xf %{S:12}\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/pierrec/lz4\
+tar --strip-components=1 -xf %{S:13}\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/refi64/go-lxtempdir\
+tar --strip-components=1 -xf %{S:14}\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/ulikunitz/xz\
+tar --strip-components=1 -xf %{S:15}\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/varlink/go\
+tar --strip-components=1 -xf %{S:16}\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/xi2/xz\
+tar --strip-components=1 -xf %{S:17}\
 :
 %if 0%{?fedora} < 31
-Source6: https://github.com/andybalholm/brotli/archive/5f990b63d2d6.tar.gz#/github-com-andybalholm-brotli-5f990b63d2d6.tar.gz
-Source7: https://github.com/dsnet/compress/archive/v0.0.1.tar.gz#/github-com-dsnet-compress-v0.0.1.tar.gz
-Source8: https://github.com/godbus/dbus/archive/v5.0.1.tar.gz#/github-com-godbus-dbus-v5.0.1.tar.gz
-Source9: https://github.com/golang/gddo/archive/af0f2af80721.tar.gz#/github-com-golang-gddo-af0f2af80721.tar.gz
-Source10: https://github.com/golang/snappy/archive/v0.0.1.tar.gz#/github-com-golang-snappy-v0.0.1.tar.gz
-Source11: https://github.com/google/go-cmp/archive/v0.3.0.tar.gz#/github-com-google-go-cmp-v0.3.0.tar.gz
-Source12: https://github.com/klauspost/compress/archive/v1.7.1.tar.gz#/github-com-klauspost-compress-v1.7.1.tar.gz
-Source13: https://github.com/klauspost/cpuid/archive/v1.2.0.tar.gz#/github-com-klauspost-cpuid-v1.2.0.tar.gz
-Source14: https://github.com/klauspost/pgzip/archive/v1.2.1.tar.gz#/github-com-klauspost-pgzip-v1.2.1.tar.gz
-Source15: https://github.com/kr/pty/archive/v1.1.1.tar.gz#/github-com-kr-pty-v1.1.1.tar.gz
-Source16: https://github.com/mholt/archiver/archive/33320f6f7306.tar.gz#/github-com-mholt-archiver-33320f6f7306.tar.gz
-Source17: https://github.com/nwaples/rardecode/archive/v1.0.0.tar.gz#/github-com-nwaples-rardecode-v1.0.0.tar.gz
-Source18: https://github.com/pierrec/lz4/archive/v2.2.6.tar.gz#/github-com-pierrec-lz4-v2.2.6.tar.gz
-Source19: https://github.com/ulikunitz/xz/archive/v0.5.6.tar.gz#/github-com-ulikunitz-xz-v0.5.6.tar.gz
-Source20: https://github.com/xi2/xz/archive/48954b6210f8.tar.gz#/github-com-xi2-xz-48954b6210f8.tar.gz
+Source18: https://github.com/godbus/dbus/archive/v5.0.1.tar.gz#/github-com-godbus-dbus-v5.0.1.tar.gz
+Source19: https://github.com/google/go-cmp/archive/v0.3.0.tar.gz#/github-com-google-go-cmp-v0.3.0.tar.gz
+Source20: https://github.com/kr/pty/archive/v1.1.1.tar.gz#/github-com-kr-pty-v1.1.1.tar.gz
 Source21: https://github.com/kubernetes/apimachinery/archive/e31a5531b558.tar.gz#/k8s-io-apimachinery-e31a5531b558.tar.gz
 Source22: https://github.com/kubernetes/klog/archive/v0.4.0.tar.gz#/k8s-io-klog-v0.4.0.tar.gz
 %define setup_go_archives_pre_f31_only \
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/andybalholm/brotli\
-tar --strip-components=1 -xf %{S:6}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/dsnet/compress\
-tar --strip-components=1 -xf %{S:7}\
 %setup -q -T -c -n %{name}-%{version}/vendor/github.com/godbus/dbus\
-tar --strip-components=1 -xf %{S:8}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/golang/gddo\
-tar --strip-components=1 -xf %{S:9}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/golang/snappy\
-tar --strip-components=1 -xf %{S:10}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/google/go-cmp\
-tar --strip-components=1 -xf %{S:11}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/klauspost/compress\
-tar --strip-components=1 -xf %{S:12}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/klauspost/cpuid\
-tar --strip-components=1 -xf %{S:13}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/klauspost/pgzip\
-tar --strip-components=1 -xf %{S:14}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/kr/pty\
-tar --strip-components=1 -xf %{S:15}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/mholt/archiver\
-tar --strip-components=1 -xf %{S:16}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/nwaples/rardecode\
-tar --strip-components=1 -xf %{S:17}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/pierrec/lz4\
 tar --strip-components=1 -xf %{S:18}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/ulikunitz/xz\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/google/go-cmp\
 tar --strip-components=1 -xf %{S:19}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/xi2/xz\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/kr/pty\
 tar --strip-components=1 -xf %{S:20}\
 %setup -q -T -c -n %{name}-%{version}/vendor/k8s.io/apimachinery\
 tar --strip-components=1 -xf %{S:21}\
