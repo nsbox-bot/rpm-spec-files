@@ -15,7 +15,7 @@
 %global _missing_build_ids_terminate_build 0
 
 Name: nsbox-edge
-Version: 19.09.20
+Version: 19.09.21
 Release: 1%{?dist}
 Summary: A multi-purpose, nspawn-powered container manager
 License: MPL-2.0
@@ -240,12 +240,13 @@ unset LDFLAGS
 mkdir -p out
 cat >out/args.gn <<EOF
 go_exe = "$PWD/build/go-shim.sh"
+prefix = "%{_prefix}"
 bin_dir = "%{relbindir}"
 libexec_dir = "%{rellibexecdir}"
 share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
-override_release_version = "19.09.20"
+override_release_version = "19.09.21"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
@@ -262,8 +263,9 @@ chmod -R g-w %{buildroot}
 %files
 %{_bindir}/%{name}
 %{_sysconfdir}/profile.d/%{name}.sh
-%{_libexecdir}/%{name}/nsbox-host
 %{_libexecdir}/%{name}/nsboxd
+%{_libexecdir}/%{name}/nsbox-invoker
+%{_libexecdir}/%{name}/nsbox-host
 %{_datadir}/%{name}/data/getty-override.conf
 %{_datadir}/%{name}/data/nsbox-container.target
 %{_datadir}/%{name}/data/nsbox-init.service
@@ -277,6 +279,8 @@ chmod -R g-w %{buildroot}
 %{_datadir}/%{name}/images/fedora/roles/main/templates/nsbox.repo
 %{_datadir}/%{name}/release/VERSION
 %{_datadir}/%{name}/release/BRANCH
+%{_datadir}/polkit-1/actions/dev.nsbox.policy
+%{_datadir}/polkit-1/rules.d/dev.nsbox.rules
 
 %files bender
 %{_bindir}/%{name}-bender
