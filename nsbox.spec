@@ -15,7 +15,7 @@
 %global _missing_build_ids_terminate_build 0
 
 Name: nsbox-edge
-Version: 19.09.26
+Version: 19.09.28
 Release: 1%{?dist}
 Summary: A multi-purpose, nspawn-powered container manager
 License: MPL-2.0
@@ -40,6 +40,7 @@ BuildRequires: golang(github.com/coreos/go-systemd/journal)
 BuildRequires: golang(github.com/coreos/go-systemd/machine1)
 BuildRequires: golang(github.com/coreos/go-systemd/sdjournal)
 BuildRequires: golang(github.com/coreos/go-systemd/util)
+BuildRequires: golang(github.com/coreos/pkg/dlopen)
 BuildRequires: golang(github.com/dustin/go-humanize)
 %if 0%{?fedora} >= 31
 BuildRequires: golang(github.com/godbus/dbus)
@@ -246,7 +247,7 @@ libexec_dir = "%{rellibexecdir}"
 share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
-override_release_version = "19.09.26"
+override_release_version = "19.09.28"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
