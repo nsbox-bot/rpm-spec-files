@@ -34,6 +34,7 @@ BuildRequires: systemd-devel
 Requires: tar
 Source0: nsbox-sources.tar
 Source1: https://gn.googlesource.com/gn/+archive/2f5276089c50cc76bc9282ec1246304c4dafc5b8.tar.gz#/gn.tar.gz
+BuildRequires: golang(github.com/briandowns/spinner)
 BuildRequires: golang(github.com/coreos/go-systemd/daemon)
 BuildRequires: golang(github.com/coreos/go-systemd/dbus)
 BuildRequires: golang(github.com/coreos/go-systemd/journal)
@@ -62,19 +63,22 @@ BuildRequires: golang(github.com/pkg/errors)
 BuildRequires: golang(golang.org/x/crypto/ssh/terminal)
 BuildRequires: golang(golang.org/x/sync/errgroup)
 BuildRequires: golang(golang.org/x/sys/unix)
-BuildRequires: golang(gopkg.in/cheggaaa/pb.v1)
 %if 0%{?fedora} >= 31
 BuildRequires: golang(k8s.io/apimachinery/pkg/util/runtime)
 BuildRequires: golang(k8s.io/apimachinery/pkg/util/wait)
 %endif
 %define setup_go_repo_links \
 cd %{_builddir}/%{name}-%{version}\
+mkdir -p vendor/github.com/briandowns\
+ln -sf %{gopath}/src/github.com/briandowns/spinner vendor/github.com/briandowns/spinner\
 mkdir -p vendor/github.com/coreos\
 ln -sf %{gopath}/src/github.com/coreos/go-systemd vendor/github.com/coreos/go-systemd\
 mkdir -p vendor/github.com/coreos\
 ln -sf %{gopath}/src/github.com/coreos/pkg vendor/github.com/coreos/pkg\
 mkdir -p vendor/github.com/dustin\
 ln -sf %{gopath}/src/github.com/dustin/go-humanize vendor/github.com/dustin/go-humanize\
+mkdir -p vendor/github.com/fatih\
+ln -sf %{gopath}/src/github.com/fatih/color vendor/github.com/fatih/color\
 mkdir -p vendor/github.com/godbus\
 ln -sf %{gopath}/src/github.com/godbus/dbus vendor/github.com/godbus/dbus\
 mkdir -p vendor/github.com/google\
@@ -82,7 +86,9 @@ ln -sf %{gopath}/src/github.com/google/go-cmp vendor/github.com/google/go-cmp\
 mkdir -p vendor/github.com/kr\
 ln -sf %{gopath}/src/github.com/kr/pty vendor/github.com/kr/pty\
 mkdir -p vendor/github.com/mattn\
-ln -sf %{gopath}/src/github.com/mattn/go-runewidth vendor/github.com/mattn/go-runewidth\
+ln -sf %{gopath}/src/github.com/mattn/go-colorable vendor/github.com/mattn/go-colorable\
+mkdir -p vendor/github.com/mattn\
+ln -sf %{gopath}/src/github.com/mattn/go-isatty vendor/github.com/mattn/go-isatty\
 mkdir -p vendor/github.com/pkg\
 ln -sf %{gopath}/src/github.com/pkg/errors vendor/github.com/pkg/errors\
 mkdir -p vendor/golang.org/x\
@@ -91,83 +97,48 @@ mkdir -p vendor/golang.org/x\
 ln -sf %{gopath}/src/golang.org/x/sync vendor/golang.org/x/sync\
 mkdir -p vendor/golang.org/x\
 ln -sf %{gopath}/src/golang.org/x/sys vendor/golang.org/x/sys\
-mkdir -p vendor/gopkg.in/cheggaaa\
-ln -sf %{gopath}/src/gopkg.in/cheggaaa/pb.v1 vendor/gopkg.in/cheggaaa/pb.v1\
 mkdir -p vendor/k8s.io\
 ln -sf %{gopath}/src/k8s.io/apimachinery vendor/k8s.io/apimachinery\
 mkdir -p vendor/k8s.io\
 ln -sf %{gopath}/src/k8s.io/klog vendor/k8s.io/klog\
 :
 Source2: https://github.com/GehirnInc/crypt/archive/6c0105aabd46.tar.gz#/github-com-GehirnInc-crypt-6c0105aabd46.tar.gz
-Source3: https://github.com/andybalholm/brotli/archive/5f990b63d2d6.tar.gz#/github-com-andybalholm-brotli-5f990b63d2d6.tar.gz
-Source4: https://github.com/dsnet/compress/archive/v0.0.1.tar.gz#/github-com-dsnet-compress-v0.0.1.tar.gz
-Source5: https://github.com/golang/gddo/archive/af0f2af80721.tar.gz#/github-com-golang-gddo-af0f2af80721.tar.gz
-Source6: https://github.com/golang/snappy/archive/v0.0.1.tar.gz#/github-com-golang-snappy-v0.0.1.tar.gz
-Source7: https://github.com/google/go-containerregistry/archive/31e00cede111.tar.gz#/github-com-google-go-containerregistry-31e00cede111.tar.gz
-Source8: https://github.com/google/subcommands/archive/v1.0.1.tar.gz#/github-com-google-subcommands-v1.0.1.tar.gz
-Source9: https://github.com/klauspost/compress/archive/v1.7.1.tar.gz#/github-com-klauspost-compress-v1.7.1.tar.gz
-Source10: https://github.com/klauspost/cpuid/archive/v1.2.0.tar.gz#/github-com-klauspost-cpuid-v1.2.0.tar.gz
-Source11: https://github.com/klauspost/pgzip/archive/v1.2.1.tar.gz#/github-com-klauspost-pgzip-v1.2.1.tar.gz
-Source12: https://github.com/mholt/archiver/archive/v3.2.0.tar.gz#/github-com-mholt-archiver-v3.2.0.tar.gz
-Source13: https://github.com/nwaples/rardecode/archive/v1.0.0.tar.gz#/github-com-nwaples-rardecode-v1.0.0.tar.gz
-Source14: https://github.com/pierrec/lz4/archive/v2.2.6.tar.gz#/github-com-pierrec-lz4-v2.2.6.tar.gz
-Source15: https://github.com/refi64/go-lxtempdir/archive/e8f0a4e7825f.tar.gz#/github-com-refi64-go-lxtempdir-e8f0a4e7825f.tar.gz
-Source16: https://github.com/ulikunitz/xz/archive/v0.5.6.tar.gz#/github-com-ulikunitz-xz-v0.5.6.tar.gz
-Source17: https://github.com/varlink/go/archive/b83e34ab175f.tar.gz#/github-com-varlink-go-b83e34ab175f.tar.gz
-Source18: https://github.com/xi2/xz/archive/48954b6210f8.tar.gz#/github-com-xi2-xz-48954b6210f8.tar.gz
+Source3: https://github.com/artyom/untar/archive/v1.0.0.tar.gz#/github-com-artyom-untar-v1.0.0.tar.gz
+Source4: https://github.com/google/go-containerregistry/archive/31e00cede111.tar.gz#/github-com-google-go-containerregistry-31e00cede111.tar.gz
+Source5: https://github.com/google/subcommands/archive/v1.0.1.tar.gz#/github-com-google-subcommands-v1.0.1.tar.gz
+Source6: https://github.com/refi64/go-lxtempdir/archive/e8f0a4e7825f.tar.gz#/github-com-refi64-go-lxtempdir-e8f0a4e7825f.tar.gz
+Source7: https://github.com/varlink/go/archive/b83e34ab175f.tar.gz#/github-com-varlink-go-b83e34ab175f.tar.gz
 %define setup_go_archives_universal \
 %setup -q -T -c -n %{name}-%{version}/vendor/github.com/GehirnInc/crypt\
 tar --strip-components=1 -xf %{S:2}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/andybalholm/brotli\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/artyom/untar\
 tar --strip-components=1 -xf %{S:3}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/dsnet/compress\
-tar --strip-components=1 -xf %{S:4}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/golang/gddo\
-tar --strip-components=1 -xf %{S:5}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/golang/snappy\
-tar --strip-components=1 -xf %{S:6}\
 %setup -q -T -c -n %{name}-%{version}/vendor/github.com/google/go-containerregistry\
-tar --strip-components=1 -xf %{S:7}\
+tar --strip-components=1 -xf %{S:4}\
 %setup -q -T -c -n %{name}-%{version}/vendor/github.com/google/subcommands\
-tar --strip-components=1 -xf %{S:8}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/klauspost/compress\
-tar --strip-components=1 -xf %{S:9}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/klauspost/cpuid\
-tar --strip-components=1 -xf %{S:10}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/klauspost/pgzip\
-tar --strip-components=1 -xf %{S:11}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/mholt/archiver\
-tar --strip-components=1 -xf %{S:12}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/nwaples/rardecode\
-tar --strip-components=1 -xf %{S:13}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/pierrec/lz4\
-tar --strip-components=1 -xf %{S:14}\
+tar --strip-components=1 -xf %{S:5}\
 %setup -q -T -c -n %{name}-%{version}/vendor/github.com/refi64/go-lxtempdir\
-tar --strip-components=1 -xf %{S:15}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/ulikunitz/xz\
-tar --strip-components=1 -xf %{S:16}\
+tar --strip-components=1 -xf %{S:6}\
 %setup -q -T -c -n %{name}-%{version}/vendor/github.com/varlink/go\
-tar --strip-components=1 -xf %{S:17}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/xi2/xz\
-tar --strip-components=1 -xf %{S:18}\
+tar --strip-components=1 -xf %{S:7}\
 :
 %if 0%{?fedora} < 31
-Source19: https://github.com/godbus/dbus/archive/v5.0.1.tar.gz#/github-com-godbus-dbus-v5.0.1.tar.gz
-Source20: https://github.com/google/go-cmp/archive/v0.3.0.tar.gz#/github-com-google-go-cmp-v0.3.0.tar.gz
-Source21: https://github.com/kr/pty/archive/v1.1.1.tar.gz#/github-com-kr-pty-v1.1.1.tar.gz
-Source22: https://github.com/kubernetes/apimachinery/archive/e31a5531b558.tar.gz#/k8s-io-apimachinery-e31a5531b558.tar.gz
-Source23: https://github.com/kubernetes/klog/archive/v0.4.0.tar.gz#/k8s-io-klog-v0.4.0.tar.gz
+Source8: https://github.com/godbus/dbus/archive/v5.0.1.tar.gz#/github-com-godbus-dbus-v5.0.1.tar.gz
+Source9: https://github.com/google/go-cmp/archive/v0.3.0.tar.gz#/github-com-google-go-cmp-v0.3.0.tar.gz
+Source10: https://github.com/kr/pty/archive/v1.1.1.tar.gz#/github-com-kr-pty-v1.1.1.tar.gz
+Source11: https://github.com/kubernetes/apimachinery/archive/e31a5531b558.tar.gz#/k8s-io-apimachinery-e31a5531b558.tar.gz
+Source12: https://github.com/kubernetes/klog/archive/v0.4.0.tar.gz#/k8s-io-klog-v0.4.0.tar.gz
 %define setup_go_archives_pre_f31_only \
 %setup -q -T -c -n %{name}-%{version}/vendor/github.com/godbus/dbus\
-tar --strip-components=1 -xf %{S:19}\
+tar --strip-components=1 -xf %{S:8}\
 %setup -q -T -c -n %{name}-%{version}/vendor/github.com/google/go-cmp\
-tar --strip-components=1 -xf %{S:20}\
+tar --strip-components=1 -xf %{S:9}\
 %setup -q -T -c -n %{name}-%{version}/vendor/github.com/kr/pty\
-tar --strip-components=1 -xf %{S:21}\
+tar --strip-components=1 -xf %{S:10}\
 %setup -q -T -c -n %{name}-%{version}/vendor/k8s.io/apimachinery\
-tar --strip-components=1 -xf %{S:22}\
+tar --strip-components=1 -xf %{S:11}\
 %setup -q -T -c -n %{name}-%{version}/vendor/k8s.io/klog\
-tar --strip-components=1 -xf %{S:23}\
+tar --strip-components=1 -xf %{S:12}\
 :
 %endif
 
