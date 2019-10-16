@@ -15,7 +15,7 @@
 %global _missing_build_ids_terminate_build 0
 
 Name: nsbox-edge
-Version: 19.10.14
+Version: 19.10.16.5b9dd7d
 Release: 1%{?dist}
 Summary: A multi-purpose, nspawn-powered container manager
 License: MPL-2.0
@@ -221,7 +221,7 @@ libexec_dir = "%{rellibexecdir}"
 share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
-override_release_version = "19.10.14"
+override_release_version = "19.10.16.5b9dd7d"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
