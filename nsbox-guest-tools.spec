@@ -1,5 +1,5 @@
 Name: nsbox-guest-tools
-Version: 19.10.16.f85fc7e
+Version: 19.10.24.79b4a08
 Release: 1%{?dist}
 Summary: Tools for nsbox host integration
 License: MPL-2.0
