@@ -15,8 +15,12 @@
 %global _missing_build_ids_terminate_build 0
 
 Name: nsbox-edge
-Version: 19.10.24.79b4a08
+Version: 19.11.01.156
+%if "%{name}" == "nsbox-edge"
+Release: 1%{?dist}.312fae4
+%else
 Release: 1%{?dist}
+%endif
 Summary: A multi-purpose, nspawn-powered container manager
 License: MPL-2.0
 URL: https://nsbox.dev/
@@ -221,7 +225,7 @@ libexec_dir = "%{rellibexecdir}"
 share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
-override_release_version = "19.10.24.79b4a08"
+override_release_version = "19.11.01.156"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
@@ -252,6 +256,10 @@ chmod -R g-w %{buildroot}
 %{_datadir}/%{name}/images/arch/metadata.json
 %{_datadir}/%{name}/images/arch/playbook.yaml
 %{_datadir}/%{name}/images/arch/roles/main/tasks/main.yaml
+%{_datadir}/%{name}/images/debian/Dockerfile
+%{_datadir}/%{name}/images/debian/metadata.json
+%{_datadir}/%{name}/images/debian/playbook.yaml
+%{_datadir}/%{name}/images/debian/roles/main/tasks/main.yaml
 %{_datadir}/%{name}/images/fedora/metadata.json
 %{_datadir}/%{name}/images/fedora/playbook.yaml
 %{_datadir}/%{name}/images/fedora/roles/main/tasks/main.yaml

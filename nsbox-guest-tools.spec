@@ -1,6 +1,10 @@
 Name: nsbox-guest-tools
-Version: 19.10.24.79b4a08
+Version: 19.11.01.156
+%if "312fae4" != ""
+Release: 1%{?dist}.312fae4
+%else
 Release: 1%{?dist}
+%endif
 Summary: Tools for nsbox host integration
 License: MPL-2.0
 URL: https://nsbox.dev/
