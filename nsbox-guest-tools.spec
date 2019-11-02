@@ -1,7 +1,7 @@
 Name: nsbox-guest-tools
-Version: 19.11.02.160
-%if "56affac" != ""
-Release: 1%{?dist}.56affac
+Version: 19.11.02.162
+%if "fb4af69" != ""
+Release: 1%{?dist}.fb4af69
 %else
 Release: 1%{?dist}
 %endif
