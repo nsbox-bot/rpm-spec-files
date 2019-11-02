@@ -15,9 +15,9 @@
 %global _missing_build_ids_terminate_build 0
 
 Name: nsbox-edge
-Version: 19.11.01.156
+Version: 19.11.02.160
 %if "%{name}" == "nsbox-edge"
-Release: 1%{?dist}.312fae4
+Release: 1%{?dist}.56affac
 %else
 Release: 1%{?dist}
 %endif
@@ -225,7 +225,7 @@ libexec_dir = "%{rellibexecdir}"
 share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
-override_release_version = "19.11.01.156"
+override_release_version = "19.11.02.160"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
@@ -266,8 +266,8 @@ chmod -R g-w %{buildroot}
 %{_datadir}/%{name}/images/fedora/roles/main/templates/nsbox.repo
 %{_datadir}/%{name}/release/VERSION
 %{_datadir}/%{name}/release/BRANCH
-%{_datadir}/polkit-1/actions/dev.nsbox.policy
-%{_datadir}/polkit-1/rules.d/dev.nsbox.rules
+%{_datadir}/polkit-1/actions/dev.nsbox.edge.policy
+%{_datadir}/polkit-1/rules.d/dev.nsbox.edge.rules
 
 %files bender
 %{_bindir}/%{name}-bender
