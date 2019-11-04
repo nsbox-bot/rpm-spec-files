@@ -15,9 +15,9 @@
 %global _missing_build_ids_terminate_build 0
 
 Name: nsbox-edge
-Version: 19.11.02.163
+Version: 19.11.04.167
 %if "%{name}" == "nsbox-edge"
-Release: 1%{?dist}.d38385b
+Release: 1%{?dist}.04e5c0f
 %else
 Release: 1%{?dist}
 %endif
@@ -225,7 +225,7 @@ libexec_dir = "%{rellibexecdir}"
 share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
-override_release_version = "19.11.02.163"
+override_release_version = "19.11.04.167"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
