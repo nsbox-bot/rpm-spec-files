@@ -15,9 +15,9 @@
 %global _missing_build_ids_terminate_build 0
 
 Name: nsbox-edge
-Version: 19.11.04.167
+Version: 19.11.05.169
 %if "%{name}" == "nsbox-edge"
-Release: 1%{?dist}.04e5c0f
+Release: 1%{?dist}.09fdab9
 %else
 Release: 1%{?dist}
 %endif
@@ -35,6 +35,9 @@ BuildRequires: golang
 BuildRequires: ninja-build
 BuildRequires: python3
 BuildRequires: systemd-devel
+Requires: polkit
+Requires: sudo
+Requires: systemd-container
 Requires: tar
 Source0: nsbox-sources.tar
 Source1: https://gn.googlesource.com/gn/+archive/2f5276089c50cc76bc9282ec1246304c4dafc5b8.tar.gz#/gn.tar.gz
@@ -225,7 +228,7 @@ libexec_dir = "%{rellibexecdir}"
 share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
-override_release_version = "19.11.04.167"
+override_release_version = "19.11.05.169"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
