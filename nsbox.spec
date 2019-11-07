@@ -13,11 +13,15 @@
 
 # nsbox-host has missing build-ids due to being static.
 %global _missing_build_ids_terminate_build 0
+# Scripts in data/scripts intentionally use a hashbang of /bin/bash (not /usr/bin)
+# because the scripts are run inside container OSs that may not have performed the /usr
+# merge yet. Skip automatically converting those hashbangs to /usr/bin/bash.
+%global __brp_mangle_shebangs_exclude .*\.sh
 
 Name: nsbox-edge
-Version: 19.11.05.169
+Version: 19.11.07.170
 %if "%{name}" == "nsbox-edge"
-Release: 1%{?dist}.09fdab9
+Release: 1%{?dist}.48f26af
 %else
 Release: 1%{?dist}
 %endif
@@ -228,7 +232,7 @@ libexec_dir = "%{rellibexecdir}"
 share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
-override_release_version = "19.11.05.169"
+override_release_version = "19.11.07.170"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
