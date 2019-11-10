@@ -1,7 +1,7 @@
 Name: nsbox-guest-tools
-Version: 19.11.09.171
-%if "3c568d0" != ""
-Release: 1%{?dist}.3c568d0
+Version: 19.11.10.173
+%if "c73840b" != ""
+Release: 1%{?dist}.c73840b
 %else
 Release: 1%{?dist}
 %endif
