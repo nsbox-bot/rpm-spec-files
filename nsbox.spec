@@ -19,9 +19,9 @@
 %global __brp_mangle_shebangs_exclude .*\.sh
 
 Name: nsbox-edge
-Version: 19.11.10.173
+Version: 19.11.18.175
 %if "%{name}" == "nsbox-edge"
-Release: 1%{?dist}.c73840b
+Release: 1%{?dist}.5a9c808
 %else
 Release: 1%{?dist}
 %endif
@@ -29,7 +29,7 @@ Summary: A multi-purpose, nspawn-powered container manager
 License: MPL-2.0
 URL: https://nsbox.dev/
 BuildRequires: gcc
-BuildRequires: gcc-c++
+BuildRequires: gn
 %if 0%{?fedora} >= 31
 BuildRequires: go-rpm-macros
 %else
@@ -44,7 +44,6 @@ Requires: sudo
 Requires: systemd-container
 Requires: tar
 Source0: nsbox-sources.tar
-Source1: https://gn.googlesource.com/gn/+archive/2f5276089c50cc76bc9282ec1246304c4dafc5b8.tar.gz#/gn.tar.gz
 BuildRequires: golang(github.com/briandowns/spinner)
 BuildRequires: golang(github.com/coreos/go-systemd/daemon)
 BuildRequires: golang(github.com/coreos/go-systemd/dbus)
@@ -187,7 +186,6 @@ rm -rf %{name}-%{version}
 %setup_go_archives_universal
 %{?setup_go_archives_pre_f31_only}
 
-%setup -q -c -T -n %{name}-%{version}/gn -a 1
 %setup -q -D
 
 %setup_go_repo_links
@@ -197,10 +195,7 @@ cat >build/go-shim.sh <<'EOF'
 #!/bin/sh
 if [[ "$1" == "build" ]]; then
   shift
-  # XXX: We can't use buildmode=pie for our static nsbox-host, so remove it here.
-  extra_args=""
-  [[ "$CGO_ENABLED" == "0" ]] && extra_args="-buildmode=exe" ||:
-  %gobuild $extra_args "$@"
+  %gobuild "$@"
 else
   go "$@"
 fi
@@ -211,18 +206,8 @@ chmod +x build/go-shim.sh
 
 %build
 %set_build_flags
-export CC=gcc
-export CXX=g++
-
-cd gn
-# last_commit_position.h generation wants Git, so write it manually.
-python3 build/gen.py --no-last-commit-position --no-static-libstdc++
-# XXX: this sort-of works, it's good enough for our purposes.
-echo -e '#pragma once\n#define LAST_COMMIT_POSITION "2f5276089c50cc76bc9282ec1246304c4dafc5b8"' > out/last_commit_position.h
-ninja -C out gn
-cd ..
-
 unset LDFLAGS
+
 mkdir -p out
 cat >out/args.gn <<EOF
 go_exe = "$PWD/build/go-shim.sh"
@@ -232,12 +217,13 @@ libexec_dir = "%{rellibexecdir}"
 share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
-override_release_version = "19.11.10.173"
+override_release_version = "19.11.18.175"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
 EOF
-gn/out/gn gen out
+
+gn gen out
 ninja -C out
 
 %install
