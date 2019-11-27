@@ -19,9 +19,9 @@
 %global __brp_mangle_shebangs_exclude .*\.sh
 
 Name: nsbox-edge
-Version: 19.11.20.177
+Version: 19.11.27.181
 %if "%{name}" == "nsbox-edge"
-Release: 1%{?dist}.d509ab0
+Release: 1%{?dist}.80471d9
 %else
 Release: 1%{?dist}
 %endif
@@ -217,7 +217,7 @@ libexec_dir = "%{rellibexecdir}"
 share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
-override_release_version = "19.11.20.177"
+override_release_version = "19.11.27.181"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
