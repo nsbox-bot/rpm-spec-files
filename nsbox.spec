@@ -19,9 +19,9 @@
 %global __brp_mangle_shebangs_exclude .*\.sh
 
 Name: nsbox-edge
-Version: 19.11.27.181
+Version: 20.03.17.195
 %if "%{name}" == "nsbox-edge"
-Release: 1%{?dist}.80471d9
+Release: 1%{?dist}.d2b5ab9
 %else
 Release: 1%{?dist}
 %endif
@@ -38,11 +38,13 @@ BuildRequires: go-compilers-golang-compiler
 BuildRequires: golang
 BuildRequires: ninja-build
 BuildRequires: python3
+BuildRequires: selinux-policy-devel
 BuildRequires: systemd-devel
+Requires: container-selinux
+Requires: %{name}-selinux == %{version}-%{release}
 Requires: polkit
 Requires: sudo
 Requires: systemd-container
-Requires: tar
 Source0: nsbox-sources.tar
 BuildRequires: golang(github.com/briandowns/spinner)
 BuildRequires: golang(github.com/coreos/go-systemd/daemon)
@@ -68,6 +70,9 @@ BuildRequires: golang(github.com/google/go-cmp/cmp/internal/teststructs)
 %endif
 %if 0%{?fedora} >= 31
 BuildRequires: golang(github.com/kr/pty)
+%endif
+%if 0%{?fedora} >= 31
+BuildRequires: golang(github.com/opencontainers/selinux/go-selinux)
 %endif
 BuildRequires: golang(github.com/pkg/errors)
 BuildRequires: golang(golang.org/x/crypto/ssh/terminal)
@@ -99,6 +104,8 @@ mkdir -p vendor/github.com/mattn\
 ln -sf %{gopath}/src/github.com/mattn/go-colorable vendor/github.com/mattn/go-colorable\
 mkdir -p vendor/github.com/mattn\
 ln -sf %{gopath}/src/github.com/mattn/go-isatty vendor/github.com/mattn/go-isatty\
+mkdir -p vendor/github.com/opencontainers\
+ln -sf %{gopath}/src/github.com/opencontainers/selinux vendor/github.com/opencontainers/selinux\
 mkdir -p vendor/github.com/pkg\
 ln -sf %{gopath}/src/github.com/pkg/errors vendor/github.com/pkg/errors\
 mkdir -p vendor/golang.org/x\
@@ -135,9 +142,10 @@ tar --strip-components=1 -xf %{S:7}\
 %if 0%{?fedora} < 31
 Source8: https://github.com/godbus/dbus/archive/v5.0.1.tar.gz#/github-com-godbus-dbus-v5.0.1.tar.gz
 Source9: https://github.com/google/go-cmp/archive/v0.3.0.tar.gz#/github-com-google-go-cmp-v0.3.0.tar.gz
-Source10: https://github.com/kr/pty/archive/v1.1.1.tar.gz#/github-com-kr-pty-v1.1.1.tar.gz
-Source11: https://github.com/kubernetes/apimachinery/archive/e31a5531b558.tar.gz#/k8s-io-apimachinery-e31a5531b558.tar.gz
-Source12: https://github.com/kubernetes/klog/archive/v0.4.0.tar.gz#/k8s-io-klog-v0.4.0.tar.gz
+Source10: https://github.com/kr/pty/archive/v1.1.5.tar.gz#/github-com-kr-pty-v1.1.5.tar.gz
+Source11: https://github.com/opencontainers/selinux/archive/v1.3.0.tar.gz#/github-com-opencontainers-selinux-v1.3.0.tar.gz
+Source12: https://github.com/kubernetes/apimachinery/archive/v0.17.4.tar.gz#/k8s-io-apimachinery-v0.17.4.tar.gz
+Source13: https://github.com/kubernetes/klog/archive/v1.0.0.tar.gz#/k8s-io-klog-v1.0.0.tar.gz
 %define setup_go_archives_pre_f31_only \
 %setup -q -T -c -n %{name}-%{version}/vendor/github.com/godbus/dbus\
 tar --strip-components=1 -xf %{S:8}\
@@ -145,16 +153,25 @@ tar --strip-components=1 -xf %{S:8}\
 tar --strip-components=1 -xf %{S:9}\
 %setup -q -T -c -n %{name}-%{version}/vendor/github.com/kr/pty\
 tar --strip-components=1 -xf %{S:10}\
-%setup -q -T -c -n %{name}-%{version}/vendor/k8s.io/apimachinery\
+%setup -q -T -c -n %{name}-%{version}/vendor/github.com/opencontainers/selinux\
 tar --strip-components=1 -xf %{S:11}\
-%setup -q -T -c -n %{name}-%{version}/vendor/k8s.io/klog\
+%setup -q -T -c -n %{name}-%{version}/vendor/k8s.io/apimachinery\
 tar --strip-components=1 -xf %{S:12}\
+%setup -q -T -c -n %{name}-%{version}/vendor/k8s.io/klog\
+tar --strip-components=1 -xf %{S:13}\
 :
 %endif
 
 
 %description
 nsbox is a multi-purpose, nspawn-powered container manager.
+
+%package selinux
+BuildArch: noarch
+Summary: SELinux policy for %{name}
+%{?selinux_requires}
+%description selinux
+This is the SELinux policy for %{name}.
 
 %package bender
 Summary: Build images for nsbox
@@ -217,7 +234,8 @@ libexec_dir = "%{rellibexecdir}"
 share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
-override_release_version = "19.11.27.181"
+enable_selinux = true
+override_release_version = "20.03.17.195"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
@@ -231,6 +249,24 @@ mkdir -p %{buildroot}/%{_prefix}
 cp -r out/install/%{_sysconfdir} %{buildroot}
 cp -r out/install/{%{relbindir},%{rellibexecdir},%{reldatadir}} %{buildroot}/%{_prefix}
 chmod -R g-w %{buildroot}
+
+%post
+# XXX: I don't even know why I need this
+restorecon %{_libexecdir}/%{name}/nsboxd
+
+%pre selinux
+%selinux_relabel_pre
+
+%post selinux
+%selinux_modules_install %{_data}/selinux/packages/%{name}.pp.bz2
+
+%postun selinux
+if [ $1 -eq 0 ]; then
+  %selinux_modules_uninstall %{name}
+fi
+
+%posttrans selinux
+%selinux_relabel_post
 
 %files
 %{_bindir}/%{name}
@@ -261,6 +297,9 @@ chmod -R g-w %{buildroot}
 %{_datadir}/%{name}/release/BRANCH
 %{_datadir}/polkit-1/actions/dev.nsbox.edge.policy
 %{_datadir}/polkit-1/rules.d/dev.nsbox.edge.rules
+
+%files selinux
+%{_datadir}/selinux/packages/%{name}.pp.bz2
 
 %files bender
 %{_bindir}/%{name}-bender
