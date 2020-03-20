@@ -1,7 +1,7 @@
 Name: nsbox-guest-tools
-Version: 20.03.20.202
-%if "d8998a8" != ""
-Release: 1%{?dist}.d8998a8
+Version: 20.03.20.203
+%if "283ab77" != ""
+Release: 1%{?dist}.283ab77
 %else
 Release: 1%{?dist}
 %endif
