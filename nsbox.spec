@@ -19,9 +19,9 @@
 %global __brp_mangle_shebangs_exclude .*\.sh
 
 Name: nsbox-edge
-Version: 20.03.20.203
+Version: 20.03.20.206
 %if "%{name}" == "nsbox-edge"
-Release: 1%{?dist}.283ab77
+Release: 1%{?dist}.a774303
 %else
 Release: 1%{?dist}
 %endif
@@ -235,7 +235,7 @@ share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
 enable_selinux = true
-override_release_version = "20.03.20.203"
+override_release_version = "20.03.20.206"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
@@ -250,15 +250,11 @@ cp -r out/install/%{_sysconfdir} %{buildroot}
 cp -r out/install/{%{relbindir},%{rellibexecdir},%{reldatadir}} %{buildroot}/%{_prefix}
 chmod -R g-w %{buildroot}
 
-%post
-# XXX: I don't even know why I need this
-restorecon %{_libexecdir}/%{name}/nsboxd
-
 %pre selinux
 %selinux_relabel_pre
 
 %post selinux
-%selinux_modules_install %{_data}/selinux/packages/%{name}.pp.bz2
+%selinux_modules_install %{_datadir}/selinux/packages/%{name}.pp.bz2
 
 %postun selinux
 if [ $1 -eq 0 ]; then
