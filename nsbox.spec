@@ -19,9 +19,9 @@
 %global __brp_mangle_shebangs_exclude .*\.sh
 
 Name: nsbox-edge
-Version: 20.03.20.206
+Version: 20.03.21.219
 %if "%{name}" == "nsbox-edge"
-Release: 1%{?dist}.a774303
+Release: 1%{?dist}.fcd5db5
 %else
 Release: 1%{?dist}
 %endif
@@ -75,6 +75,8 @@ BuildRequires: golang(github.com/kr/pty)
 BuildRequires: golang(github.com/opencontainers/selinux/go-selinux)
 %endif
 BuildRequires: golang(github.com/pkg/errors)
+BuildRequires: golang(github.com/vishvananda/netlink/nl)
+BuildRequires: golang(github.com/vishvananda/netlink)
 BuildRequires: golang(golang.org/x/crypto/ssh/terminal)
 BuildRequires: golang(golang.org/x/sync/errgroup)
 BuildRequires: golang(golang.org/x/sys/unix)
@@ -108,6 +110,10 @@ mkdir -p vendor/github.com/opencontainers\
 ln -sf %{gopath}/src/github.com/opencontainers/selinux vendor/github.com/opencontainers/selinux\
 mkdir -p vendor/github.com/pkg\
 ln -sf %{gopath}/src/github.com/pkg/errors vendor/github.com/pkg/errors\
+mkdir -p vendor/github.com/vishvananda\
+ln -sf %{gopath}/src/github.com/vishvananda/netlink vendor/github.com/vishvananda/netlink\
+mkdir -p vendor/github.com/vishvananda\
+ln -sf %{gopath}/src/github.com/vishvananda/netns vendor/github.com/vishvananda/netns\
 mkdir -p vendor/golang.org/x\
 ln -sf %{gopath}/src/golang.org/x/crypto vendor/golang.org/x/crypto\
 mkdir -p vendor/golang.org/x\
@@ -235,7 +241,7 @@ share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
 enable_selinux = true
-override_release_version = "20.03.20.206"
+override_release_version = "20.03.21.219"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
