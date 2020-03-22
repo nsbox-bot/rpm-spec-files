@@ -19,9 +19,9 @@
 %global __brp_mangle_shebangs_exclude .*\.sh
 
 Name: nsbox-edge
-Version: 20.03.22.227
+Version: 20.03.22.230
 %if "%{name}" == "nsbox-edge"
-Release: 1%{?dist}.b08e3d6
+Release: 1%{?dist}.99e2673
 %else
 Release: 1%{?dist}
 %endif
@@ -30,11 +30,7 @@ License: MPL-2.0
 URL: https://nsbox.dev/
 BuildRequires: gcc
 BuildRequires: gn
-%if 0%{?fedora} >= 31
 BuildRequires: go-rpm-macros
-%else
-BuildRequires: go-compilers-golang-compiler
-%endif
 BuildRequires: golang
 BuildRequires: ninja-build
 BuildRequires: python3
@@ -55,10 +51,7 @@ BuildRequires: golang(github.com/coreos/go-systemd/sdjournal)
 BuildRequires: golang(github.com/coreos/go-systemd/util)
 BuildRequires: golang(github.com/coreos/pkg/dlopen)
 BuildRequires: golang(github.com/dustin/go-humanize)
-%if 0%{?fedora} >= 31
 BuildRequires: golang(github.com/godbus/dbus)
-%endif
-%if 0%{?fedora} >= 31
 BuildRequires: golang(github.com/google/go-cmp/cmp/internal/diff)
 BuildRequires: golang(github.com/google/go-cmp/cmp/internal/flags)
 BuildRequires: golang(github.com/google/go-cmp/cmp/internal/function)
@@ -67,23 +60,17 @@ BuildRequires: golang(github.com/google/go-cmp/cmp)
 BuildRequires: golang(github.com/google/go-cmp/cmp/cmpopts)
 BuildRequires: golang(github.com/google/go-cmp/cmp/internal/testprotos)
 BuildRequires: golang(github.com/google/go-cmp/cmp/internal/teststructs)
-%endif
-%if 0%{?fedora} >= 31
+BuildRequires: golang(github.com/google/subcommands)
 BuildRequires: golang(github.com/kr/pty)
-%endif
-%if 0%{?fedora} >= 31
 BuildRequires: golang(github.com/opencontainers/selinux/go-selinux)
-%endif
 BuildRequires: golang(github.com/pkg/errors)
 BuildRequires: golang(github.com/vishvananda/netlink/nl)
 BuildRequires: golang(github.com/vishvananda/netlink)
 BuildRequires: golang(golang.org/x/crypto/ssh/terminal)
 BuildRequires: golang(golang.org/x/sync/errgroup)
 BuildRequires: golang(golang.org/x/sys/unix)
-%if 0%{?fedora} >= 31
 BuildRequires: golang(k8s.io/apimachinery/pkg/util/runtime)
 BuildRequires: golang(k8s.io/apimachinery/pkg/util/wait)
-%endif
 %define setup_go_repo_links \
 cd %{_builddir}/%{name}-%{version}\
 mkdir -p vendor/github.com/briandowns\
@@ -100,6 +87,8 @@ mkdir -p vendor/github.com/godbus\
 ln -sf %{gopath}/src/github.com/godbus/dbus vendor/github.com/godbus/dbus\
 mkdir -p vendor/github.com/google\
 ln -sf %{gopath}/src/github.com/google/go-cmp vendor/github.com/google/go-cmp\
+mkdir -p vendor/github.com/google\
+ln -sf %{gopath}/src/github.com/google/subcommands vendor/github.com/google/subcommands\
 mkdir -p vendor/github.com/kr\
 ln -sf %{gopath}/src/github.com/kr/pty vendor/github.com/kr/pty\
 mkdir -p vendor/github.com/mattn\
@@ -128,9 +117,8 @@ ln -sf %{gopath}/src/k8s.io/klog vendor/k8s.io/klog\
 Source2: https://github.com/GehirnInc/crypt/archive/6c0105aabd46.tar.gz#/github-com-GehirnInc-crypt-6c0105aabd46.tar.gz
 Source3: https://github.com/artyom/untar/archive/v1.0.0.tar.gz#/github-com-artyom-untar-v1.0.0.tar.gz
 Source4: https://github.com/google/go-containerregistry/archive/31e00cede111.tar.gz#/github-com-google-go-containerregistry-31e00cede111.tar.gz
-Source5: https://github.com/google/subcommands/archive/v1.0.1.tar.gz#/github-com-google-subcommands-v1.0.1.tar.gz
-Source6: https://github.com/refi64/go-lxtempdir/archive/e8f0a4e7825f.tar.gz#/github-com-refi64-go-lxtempdir-e8f0a4e7825f.tar.gz
-Source7: https://github.com/varlink/go/archive/b83e34ab175f.tar.gz#/github-com-varlink-go-b83e34ab175f.tar.gz
+Source5: https://github.com/refi64/go-lxtempdir/archive/e8f0a4e7825f.tar.gz#/github-com-refi64-go-lxtempdir-e8f0a4e7825f.tar.gz
+Source6: https://github.com/varlink/go/archive/b83e34ab175f.tar.gz#/github-com-varlink-go-b83e34ab175f.tar.gz
 %define setup_go_archives_universal \
 %setup -q -T -c -n %{name}-%{version}/vendor/github.com/GehirnInc/crypt\
 tar --strip-components=1 -xf %{S:2}\
@@ -138,35 +126,11 @@ tar --strip-components=1 -xf %{S:2}\
 tar --strip-components=1 -xf %{S:3}\
 %setup -q -T -c -n %{name}-%{version}/vendor/github.com/google/go-containerregistry\
 tar --strip-components=1 -xf %{S:4}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/google/subcommands\
-tar --strip-components=1 -xf %{S:5}\
 %setup -q -T -c -n %{name}-%{version}/vendor/github.com/refi64/go-lxtempdir\
-tar --strip-components=1 -xf %{S:6}\
+tar --strip-components=1 -xf %{S:5}\
 %setup -q -T -c -n %{name}-%{version}/vendor/github.com/varlink/go\
-tar --strip-components=1 -xf %{S:7}\
+tar --strip-components=1 -xf %{S:6}\
 :
-%if 0%{?fedora} < 31
-Source8: https://github.com/godbus/dbus/archive/v5.0.1.tar.gz#/github-com-godbus-dbus-v5.0.1.tar.gz
-Source9: https://github.com/google/go-cmp/archive/v0.3.0.tar.gz#/github-com-google-go-cmp-v0.3.0.tar.gz
-Source10: https://github.com/kr/pty/archive/v1.1.5.tar.gz#/github-com-kr-pty-v1.1.5.tar.gz
-Source11: https://github.com/opencontainers/selinux/archive/v1.3.0.tar.gz#/github-com-opencontainers-selinux-v1.3.0.tar.gz
-Source12: https://github.com/kubernetes/apimachinery/archive/v0.17.4.tar.gz#/k8s-io-apimachinery-v0.17.4.tar.gz
-Source13: https://github.com/kubernetes/klog/archive/v1.0.0.tar.gz#/k8s-io-klog-v1.0.0.tar.gz
-%define setup_go_archives_pre_f31_only \
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/godbus/dbus\
-tar --strip-components=1 -xf %{S:8}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/google/go-cmp\
-tar --strip-components=1 -xf %{S:9}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/kr/pty\
-tar --strip-components=1 -xf %{S:10}\
-%setup -q -T -c -n %{name}-%{version}/vendor/github.com/opencontainers/selinux\
-tar --strip-components=1 -xf %{S:11}\
-%setup -q -T -c -n %{name}-%{version}/vendor/k8s.io/apimachinery\
-tar --strip-components=1 -xf %{S:12}\
-%setup -q -T -c -n %{name}-%{version}/vendor/k8s.io/klog\
-tar --strip-components=1 -xf %{S:13}\
-:
-%endif
 
 
 %description
@@ -207,7 +171,6 @@ rm -rf %{name}-%{version}
 
 # Order of these commands is important!
 %setup_go_archives_universal
-%{?setup_go_archives_pre_f31_only}
 
 %setup -q -D
 
@@ -241,7 +204,7 @@ share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
 enable_selinux = true
-override_release_version = "20.03.22.227"
+override_release_version = "20.03.22.230"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
