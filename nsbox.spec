@@ -19,9 +19,9 @@
 %global __brp_mangle_shebangs_exclude .*\.sh
 
 Name: nsbox-edge
-Version: 20.03.21.219
+Version: 20.03.22.226
 %if "%{name}" == "nsbox-edge"
-Release: 1%{?dist}.fcd5db5
+Release: 1%{?dist}.a6678ac
 %else
 Release: 1%{?dist}
 %endif
@@ -241,7 +241,7 @@ share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
 enable_selinux = true
-override_release_version = "20.03.21.219"
+override_release_version = "20.03.22.226"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
@@ -277,6 +277,7 @@ fi
 %{_libexecdir}/%{name}/nsbox-invoker
 %{_libexecdir}/%{name}/nsbox-host
 %{_datadir}/%{name}/data/getty-override.conf
+%{_datadir}/%{name}/data/wants-networkd.conf
 %{_datadir}/%{name}/data/nsbox-container.target
 %{_datadir}/%{name}/data/nsbox-init.service
 %{_datadir}/%{name}/data/scripts/nsbox-apply-env.sh
