@@ -19,9 +19,9 @@
 %global __brp_mangle_shebangs_exclude .*\.sh
 
 Name: nsbox-edge
-Version: 20.03.23.234
+Version: 20.03.23.237
 %if "%{name}" == "nsbox-edge"
-Release: 1%{?dist}.2c493eb
+Release: 1%{?dist}.91bf893
 %else
 Release: 1%{?dist}
 %endif
@@ -107,7 +107,7 @@ share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
 enable_selinux = true
-override_release_version = "20.03.23.234"
+override_release_version = "20.03.23.237"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
