@@ -12,16 +12,16 @@
 %global reldatadir %{reldir %{_datadir}}
 
 # nsbox-host has missing build-ids due to being static.
-%global _missing_build_ids_terminate_build 0
+%undefine _missing_build_ids_terminate_build
 # Scripts in data/scripts intentionally use a hashbang of /bin/bash (not /usr/bin)
 # because the scripts are run inside container OSs that may not have performed the /usr
 # merge yet. Skip automatically converting those hashbangs to /usr/bin/bash.
-%global __brp_mangle_shebangs_exclude .*\.sh
+%global __brp_mangle_shebangs_exclude_from .*\.sh
 
 Name: nsbox-edge
-Version: 20.03.23.237
+Version: 20.03.26.255
 %if "%{name}" == "nsbox-edge"
-Release: 1%{?dist}.91bf893
+Release: 1%{?dist}.40cbe48
 %else
 Release: 1%{?dist}
 %endif
@@ -107,7 +107,7 @@ share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
 enable_selinux = true
-override_release_version = "20.03.23.237"
+override_release_version = "20.03.26.255"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
