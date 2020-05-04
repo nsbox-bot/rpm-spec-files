@@ -1,7 +1,7 @@
 Name: nsbox-guest-tools
-Version: 20.05.04.262
-%if "11249f5" != ""
-Release: 1%{?dist}.11249f5
+Version: 20.05.04.263
+%if "c6136ae" != ""
+Release: 1%{?dist}.c6136ae
 %else
 Release: 1%{?dist}
 %endif
