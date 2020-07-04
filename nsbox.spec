@@ -19,9 +19,9 @@
 %global __brp_mangle_shebangs_exclude_from .*\.sh
 
 Name: nsbox-edge
-Version: 20.05.22.275
+Version: 20.07.04.276
 %if "%{name}" == "nsbox-edge"
-Release: 1%{?dist}.97f2b16
+Release: 1%{?dist}.8cd3975
 %else
 Release: 1%{?dist}
 %endif
@@ -107,7 +107,7 @@ share_dir = "%{reldatadir}"
 state_dir = "%{_sharedstatedir}"
 config_dir = "%{_sysconfdir}"
 enable_selinux = true
-override_release_version = "20.05.22.275"
+override_release_version = "20.07.04.276"
 %if "%{name}" != "nsbox-edge"
 is_stable_build = true
 %endif
@@ -150,18 +150,7 @@ fi
 %{_datadir}/%{name}/data/scripts/nsbox-enter-run.sh
 %{_datadir}/%{name}/data/scripts/nsbox-enter-setup.sh
 %{_datadir}/%{name}/data/scripts/nsbox-init.sh
-%{_datadir}/%{name}/images/arch/Dockerfile
-%{_datadir}/%{name}/images/arch/metadata.json
-%{_datadir}/%{name}/images/arch/playbook.yaml
-%{_datadir}/%{name}/images/arch/roles/main/tasks/main.yaml
-%{_datadir}/%{name}/images/debian/Dockerfile
-%{_datadir}/%{name}/images/debian/metadata.json
-%{_datadir}/%{name}/images/debian/playbook.yaml
-%{_datadir}/%{name}/images/debian/roles/main/tasks/main.yaml
-%{_datadir}/%{name}/images/fedora/metadata.json
-%{_datadir}/%{name}/images/fedora/playbook.yaml
-%{_datadir}/%{name}/images/fedora/roles/main/tasks/main.yaml
-%{_datadir}/%{name}/images/fedora/roles/main/templates/nsbox.repo
+%{_datadir}/%{name}/images/*
 %{_datadir}/%{name}/release/VERSION
 %{_datadir}/%{name}/release/BRANCH
 %{_datadir}/polkit-1/actions/dev.nsbox.edge.policy
